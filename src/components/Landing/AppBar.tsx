@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import { Link } from "react-router-dom";
 
 export const ResponsiveAppBar = () => {
 
@@ -51,7 +52,9 @@ export const ResponsiveAppBar = () => {
                     >
                         DCA
                     </Typography>
-                    <Button color="inherit" variant="outlined">Launch our app</Button>
+                    <Link to="/dca" style={{ textDecoration: 'none', color: "white" }}>
+                        <Button color="inherit" variant="outlined">Launch our app</Button>
+                    </Link>
 
                 </Toolbar>
             </Container>

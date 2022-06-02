@@ -1,7 +1,7 @@
 export const LandingCore = () => {
     return (
         <img
-            src="https://github.com/ixartz/Next-JS-Landing-Page-Starter-Template/blob/master/public/assets/images/feature2.svg"
+            src="Chart.svg"
             alt="Stonks"
         />
     );
