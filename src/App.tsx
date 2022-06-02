@@ -1,6 +1,6 @@
 import React from 'react'
 import { ChainId, DAppProvider } from "@usedapp/core"
-import { Header } from "./components/Header"
+import { Metamask } from "./components/Metamask"
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         checkInterval: 1000
       }
     }}>
-      <Header />
+      <Metamask />
     </DAppProvider>
   )
 }

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export const Header = () => {
+export const Metamask = () => {
     const classes = useStyles()
 
     const { account, activateBrowserWallet, deactivate } = useEthers()
