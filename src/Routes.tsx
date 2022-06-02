@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Metamask } from './components/DCA/Metamask';
 import { ResponsiveAppBar } from './components/Landing/AppBar';
 import { LandingCore } from './components/Landing/LandingCore';
+import { NotFound } from './components/404/NotFound';
 
 
 function Routes() {
@@ -24,6 +25,9 @@ function Routes() {
                     }}>
                         <Metamask />
                     </DAppProvider>
+                </Route>
+                <Route>
+                    <NotFound />
                 </Route>
             </Switch>
         </Router>
