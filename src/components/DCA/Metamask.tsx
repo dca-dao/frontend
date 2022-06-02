@@ -20,7 +20,7 @@ export const Metamask = () => {
     return (
         <div className={classes.container}>
             {isConnected ? (
-                <Button variant="contained" onClick={deactivate}>
+                <Button color="inherit" variant="contained" onClick={deactivate}>
                     Disconnect
                 </Button>
             ) : (

@@ -2,6 +2,7 @@ import React from 'react'
 import { ChainId, DAppProvider } from "@usedapp/core"
 import { Metamask } from "./components/DCA/Metamask"
 import { ResponsiveAppBar } from "./components/Landing/AppBar"
+import { LandingCore } from './components/Landing/LandingCore'
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
     // }}>
     //   <Metamask />
     // </DAppProvider>
-    <ResponsiveAppBar />
+    //<ResponsiveAppBar />
+    <LandingCore />
   )
 }
 
