@@ -9,28 +9,30 @@ import { NotFound } from './components/404/NotFound';
 
 function Routes() {
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/">
-                    <ResponsiveAppBar />
-                    <LandingCore />
-                </Route>
-                <Route exact path="/dca">
-                    <DAppProvider config={{
-                        supportedChains: [ChainId.Kovan],
-                        notifications: {
-                            expirationPeriod: 1000,
-                            checkInterval: 1000
-                        }
-                    }}>
+        <DAppProvider config={{
+            supportedChains: [ChainId.Kovan],
+            notifications: {
+                expirationPeriod: 1000,
+                checkInterval: 1000
+            }
+        }}>
+            <Router>
+                <Switch>
+                    <Route exact path="/">
+                        <ResponsiveAppBar />
+                        <LandingCore />
+                    </Route>
+                    <Route exact path="/dca">
+
                         <Metamask />
-                    </DAppProvider>
-                </Route>
-                <Route>
-                    <NotFound />
-                </Route>
-            </Switch>
-        </Router>
+                    </Route>
+                    <Route>
+                        <NotFound />
+                    </Route>
+                </Switch>
+            </Router>
+        </DAppProvider>
+
     )
 }
 
