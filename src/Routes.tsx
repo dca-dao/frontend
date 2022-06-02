@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChainId, DAppProvider } from "@usedapp/core"
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Metamask } from './components/DCA/Metamask';
 import { ResponsiveAppBar } from './components/Landing/AppBar';
@@ -14,7 +15,15 @@ function Routes() {
                     <LandingCore />
                 </Route>
                 <Route exact path="/dca">
-                    <Metamask />
+                    <DAppProvider config={{
+                        supportedChains: [ChainId.Kovan],
+                        notifications: {
+                            expirationPeriod: 1000,
+                            checkInterval: 1000
+                        }
+                    }}>
+                        <Metamask />
+                    </DAppProvider>
                 </Route>
             </Switch>
         </Router>
