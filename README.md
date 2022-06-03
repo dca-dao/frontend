@@ -1,6 +1,5 @@
 # Hosted here
-https://app.netlify.com/sites/decentralized-dca/overview
-
+[Decentralized DCA](https://decentralized-dca.netlify.app/)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
