@@ -8,7 +8,7 @@ export const LandingCore = () => {
             <div className="item">
                 <img
                     src={Chart}
-                    alt="Stonks"
+                    alt="Chart"
                     width="650"
                     height="650"
                 />
@@ -18,7 +18,7 @@ export const LandingCore = () => {
                 <p>You can start investing in cryptocurrencies the smart way using our dollar cost averaging solution based on stablecoins and combined with automatic staking !</p>
                 <img className="dai"
                     src={DaiLogo}
-                    alt="Stablekwon"
+                    alt="Dai"
                     width="200"
                     height="200"
                 />
