@@ -5,6 +5,7 @@ import { Metamask } from './components/DCA/Metamask';
 import { ResponsiveAppBar } from './components/Landing/AppBar';
 import { LandingCore } from './components/Landing/LandingCore';
 import { NotFound } from './components/404/NotFound';
+import { DcaForm } from './components/DCA/DcaForm';
 
 
 function Routes() {
@@ -23,8 +24,8 @@ function Routes() {
                         <LandingCore />
                     </Route>
                     <Route exact path="/dca">
-
                         <Metamask />
+                        <DcaForm />
                     </Route>
                     <Route>
                         <NotFound />
