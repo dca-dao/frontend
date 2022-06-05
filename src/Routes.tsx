@@ -28,6 +28,7 @@ function Routes() {
                         <DcaForm />
                     </Route>
                     <Route>
+                        <ResponsiveAppBar />
                         <NotFound />
                     </Route>
                 </Switch>
