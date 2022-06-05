@@ -117,6 +117,10 @@ export const DcaForm = () => {
 
                     <Paper elevation={3} id="ongoingPaper">
                         <h2>Ongoing DCA</h2>
+                        <p>Total value : </p>
+                        <Button color="primary" variant="contained">
+                            Withdraw
+                        </Button>
                     </Paper>
 
                     <Paper elevation={3} id="stablePaper">
