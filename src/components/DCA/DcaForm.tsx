@@ -57,14 +57,6 @@ export const DcaForm = () => {
     };
 
     return (
-        // <div>
-        //     {daiBalance && (
-        //         <div className="balance">
-        //             Dai balance:
-        //             <p className="bold">{formatEther(daiBalance)}</p>
-        //         </div>
-        //     )}
-        //     <div>
         //         <button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")}>Invest</button>
         //         <p>Status: {status}</p>
         //     </div>
@@ -81,6 +73,23 @@ export const DcaForm = () => {
 
             ) : (
                 <div id="dcaDiv">
+
+                    <Paper elevation={3} id="fundPaper">
+                        <h2>Fund your account</h2>
+                        <TextField id="dcaFund" label="Amount to fund" variant="outlined" margin='normal' type="number" fullWidth />
+                        <div>
+                            {daiBalance && (
+                                <div className="balance">
+                                    Maximum:
+                                    <p className="bold">{formatEther(daiBalance)}</p>
+                                </div>
+                            )}
+                        </div>
+                        <Button color="primary" variant="contained">
+                            Fund
+                        </Button>
+                    </Paper>
+
                     <Paper elevation={3} id="dcaPaper">
                         <h2>Start your DCA</h2>
                         <div id="dcaInputs">
@@ -101,14 +110,6 @@ export const DcaForm = () => {
 
                                 </Select>
                             </FormControl>
-                        </div>
-                        <div>
-                            {daiBalance && (
-                                <div className="balance">
-                                    Maximum:
-                                    <p className="bold">{formatEther(daiBalance)}</p>
-                                </div>
-                            )}
                         </div>
                         <Button color="primary" variant="contained">
                             Invest

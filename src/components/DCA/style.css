@@ -7,15 +7,19 @@
     flex-direction: column;
 }
 
-#dcaPaper, #ongoingPaper, #stablePaper, #notCoPaper{
+#dcaPaper, #ongoingPaper, #stablePaper, #notCoPaper, #fundPaper{
     background-color: #fafafa;
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.3);
     margin: auto;
-    max-width: 800px;
+    max-width: 1000px;
     padding: 30px;
     width: 100%;
     margin-top: 20px;
+}
+
+#stablePaper{
+    margin-bottom: 50px;
 }
 
 #dcaInputs{
