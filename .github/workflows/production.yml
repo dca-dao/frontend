@@ -37,6 +37,8 @@ jobs:
 
     - name: Build
       run: yarn run build
+      env:
+         CI: ""
       
     - name: Deploy to netlify
       run: curl -X POST -d {} ${{ secrets.NETLIFY_BUILD_HOOK }}
