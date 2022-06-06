@@ -15,13 +15,13 @@ const diamondAddress = '0x4e551ab784a1acDDE29eb4A5C4c6275d8fA4D52D'
 const daiInterface = new utils.Interface(daiABI)
 const daiContract = new Contract(daiAddress, daiInterface) as any
 
-export function ApproveDai() {
+function ApproveDai() {
     const { state, send } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
 
     return { state, send }
 }
 
-export function SendDai() {
+function SendDai() {
     const { state, send } = useContractFunction(daiContract, 'transfer', { transactionName: 'Send DAI' })
 
     return { state, send }

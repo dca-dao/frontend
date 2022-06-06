@@ -8,7 +8,6 @@ import { getDefaultProvider } from 'ethers'
 import daiABI from "../../chain-info/daiABI.json"
 import testABI from "../../chain-info/testABI.json"
 import dcaManagerABI from "../../chain-info/facets/dcaManager.json"
-import { ApproveDai, SendDai } from '../../hooks/ContractInteractions'
 import { TextField, Paper } from '@material-ui/core'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,7 +17,6 @@ import "./style.css"
 import DaiLogo from "../../dai.png"
 import { Button, makeStyles } from "@material-ui/core"
 
-
 //test contract : 0xE627Fa9b65FBCaE3D872e73b83F70eAb82103B24
 //kovan dai : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa
 
@@ -26,8 +24,8 @@ export const DcaForm = () => {
 
     // Contract addresses
     const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-    const testAddress = '0xE627Fa9b65FBCaE3D872e73b83F70eAb82103B24'
     const diamondAddress = "0x4e551ab784a1acDDE29eb4A5C4c6275d8fA4D52D"
+    const dcaManagerAddress = "0x7633f4dDa2be60982A85ae337079869681e0Ce85"
 
     // Use metamask connected account
     const { account } = useEthers()
@@ -36,20 +34,26 @@ export const DcaForm = () => {
     // Display DAI balance
     const daiBalance = useTokenBalance(daiAddress, account)
 
-    // //DAI contract functions
+    const daiInterface = new utils.Interface(daiABI)
+    const daiContract = new Contract(daiAddress, daiInterface) as any
 
+    // //DAI contract functions
+    // const { state, send } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
 
     // const approveDai = (diamondAddress: string, amount: string) => {
     //     send(diamondAddress, amount)
     // }
 
-    // const sendDAI = (amount: string, tokenAddress: string) => {
-    //     void send(amount, tokenAddress)
-    // }
-    // const approve = (diamonAddress: string, amount: string) => {
-    //     ApproveDai(diamondAddress, amount)
-    // }
+    const dcaManagerInterface = new utils.Interface(dcaManagerABI)
+    const dcaManagerContract = new Contract(diamondAddress, dcaManagerInterface) as any
 
+    const { state, send } = useContractFunction(dcaManagerContract, 'fundAccount', { transactionName: 'Fund account' })
+
+    const fundDai = (amount: string, address: string) => {
+        send(amount, address)
+    }
+
+    // DCA frequency in seconds
     const [frequency, setFrequency] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -57,11 +61,6 @@ export const DcaForm = () => {
     };
 
     return (
-        //         <button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")}>Invest</button>
-        //         <p>Status: {status}</p>
-        //     </div>
-        // </div>
-
         <div id="mainDiv">
 
             {!isConnected ? (
@@ -85,7 +84,10 @@ export const DcaForm = () => {
                                 </div>
                             )}
                         </div>
-                        <Button color="primary" variant="contained">
+                        {/* <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained">
+                            Approve DAI
+                        </Button> */}
+                        <Button onClick={() => fundDai("10", "0x810B6B042e90aaf5FD699995998F0565D602EBa5")} color="primary" variant="contained">
                             Fund
                         </Button>
                     </Paper>
@@ -111,6 +113,12 @@ export const DcaForm = () => {
                                 </Select>
                             </FormControl>
                         </div>
+                        {daiBalance && (
+                            <div className="totalAvailable">
+                                Total available :
+                                <p className="bold">{formatEther(daiBalance)}</p>
+                            </div>
+                        )}
                         <Button color="primary" variant="contained">
                             Invest
                         </Button>
