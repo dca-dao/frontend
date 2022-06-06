@@ -3,7 +3,7 @@ import { utils } from 'ethers'
 import { Contract } from '@ethersproject/contracts'
 import ReactDOM from 'react-dom'
 import { formatEther } from '@ethersproject/units'
-import { Mainnet, DAppProvider, useTokenBalance, useEthers, Config, useContractFunction } from '@usedapp/core'
+import { Mainnet, DAppProvider, useEthers, Config, useContractFunction, useTokenBalance } from '@usedapp/core'
 import { getDefaultProvider } from 'ethers'
 import daiABI from "../../chain-info/daiABI.json"
 import testABI from "../../chain-info/testABI.json"
@@ -16,7 +16,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import "./style.css"
 import DaiLogo from "../../dai.png"
 import { Button, makeStyles } from "@material-ui/core"
-// import { useDaiFunded } from '../../hooks/ContractInteractions'
+import { useDcaDaiBalance, useDcaWEthBalance, useDcaSettings } from '../../hooks/ContractInteractions'
 
 //test contract : 0xE627Fa9b65FBCaE3D872e73b83F70eAb82103B24
 //kovan dai : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa
@@ -26,7 +26,7 @@ export const DcaForm = () => {
 
     // Contract addresses
     const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-    const diamondAddress = "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa"
+    const diamondAddress = "0x4e551ab784a1acDDE29eb4A5C4c6275d8fA4D52D"
     const dcaManagerAddress = "0x7633f4dDa2be60982A85ae337079869681e0Ce85"
 
     // Use metamask connected account
@@ -39,22 +39,37 @@ export const DcaForm = () => {
     const daiInterface = new utils.Interface(daiABI)
     const daiContract = new Contract(daiAddress, daiInterface) as any
 
-    // // Approve DAI
-    // const { state: stateApproveDai, send: sendApproveDai } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
+    // Approve DAI
+    const { state: stateApproveDai, send: sendApproveDai } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
 
-    // const approveDai = (diamondAddress: string, amount: string) => {
-    //     sendApproveDai(diamondAddress, amount)
-    // }
+    const approveDai = (diamondAddress: string, amount: string) => {
+        sendApproveDai(diamondAddress, amount)
+    }
 
     const dcaManagerInterface = new utils.Interface(dcaManagerABI)
     const dcaManagerContract = new Contract(diamondAddress, dcaManagerInterface) as any
 
-    // Send DAI
-    // const { state: stateFundDai, send: sendFundDai } = useContractFunction(dcaManagerContract, 'fundAccount', { transactionName: 'Fund account' })
+    // Fund
+    const { state: stateFundDai, send: sendFundDai } = useContractFunction(dcaManagerContract, 'fundAccount', { transactionName: 'Fund account' })
 
-    // const fundDai = (amount: string, address: string) => {
-    //     sendFundDai(amount, address)
-    // }
+    const fundDai = (amount: string, address: string) => {
+        sendFundDai(amount, address)
+    }
+
+    // Withdraw
+    const { state: stateWithdraw, send: sendWithdraw } = useContractFunction(dcaManagerContract, 'withdraw', { transactionName: 'Withdraw account' })
+
+    const withdraw = (amount: string, address: string) => {
+        sendWithdraw(amount, address)
+    }
+
+    // Set DCA Settings
+    const { state: stateSetDcaSettings, send: sendSetDcaSettings } = useContractFunction(dcaManagerContract, 'setDcaSettings', { transactionName: 'Set DCA Settings' })
+
+    const setDcaSettings = (amount: string, interval: string) => {
+        sendSetDcaSettings(amount, interval)
+    }
+
 
     // DCA frequency in seconds
     const [frequency, setFrequency] = React.useState('');
@@ -63,7 +78,9 @@ export const DcaForm = () => {
         setFrequency(event.target.value as string);
     };
 
-    // const daiFunded = 0 //useDaiFunded("0x810B6B042e90aaf5FD699995998F0565D602EBa5")
+    const dcaDaiBalance = useDcaDaiBalance(account)
+    const dcaWEthBalance = useDcaWEthBalance(account)
+    const dcaSettings = useDcaSettings(account)
 
     return (
         <div id="mainDiv">
@@ -77,7 +94,6 @@ export const DcaForm = () => {
 
             ) : (
                 <div id="dcaDiv">
-
                     <Paper elevation={3} id="fundPaper">
                         <h2>Fund your account</h2>
                         <TextField id="dcaFund" label="Amount to fund" variant="outlined" margin='normal' type="number" fullWidth />
@@ -89,12 +105,16 @@ export const DcaForm = () => {
                                 </div>
                             )}
                         </div>
-                        {/* <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained">
+                        <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained">
                             Approve DAI
-                        </Button> */}
-                        {/* <Button onClick={() => fundDai("10", "0x810B6B042e90aaf5FD699995998F0565D602EBa5")} color="primary" variant="contained">
-                            Fund
-                        </Button> */}
+                        </Button>
+                        <Button onClick={() => fundDai("", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
+                            Fund with DAI
+                        </Button>
+
+                        <Button onClick={() => setDcaSettings("1000", "86400")} color="primary" variant="contained">
+                            Set DCA Settings
+                        </Button>
                     </Paper>
 
                     <Paper elevation={3} id="dcaPaper">
@@ -118,10 +138,25 @@ export const DcaForm = () => {
                                 </Select>
                             </FormControl>
                         </div>
-                        {/* <div className="totalAvailable">
-                            Total available :
-                            <p className="bold">({daiFunded})</p>
-                        </div> */}
+                        {dcaDaiBalance && (
+                            <div className="balance">
+                                DCA DAI Balance :
+                                <p className="bold">{formatEther(dcaDaiBalance)}</p>
+                            </div>
+                        )}
+                        {dcaWEthBalance && (
+                            <div className="balance">
+                                DCA WETH Balance :
+                                <p className="bold">{formatEther(dcaWEthBalance)}</p>
+                            </div>
+                        )}
+                        {dcaSettings && (
+                            <div className="balance">
+                                DCA Settings :
+                                <p className="bold">Amount : {formatEther(dcaSettings.amount)}</p>
+                                <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
+                            </div>
+                        )}
                         <Button color="primary" variant="contained">
                             Invest
                         </Button>
@@ -130,7 +165,7 @@ export const DcaForm = () => {
                     <Paper elevation={3} id="ongoingPaper">
                         <h2>Ongoing DCA</h2>
                         <p>Total value : </p>
-                        <Button color="primary" variant="contained">
+                        <Button onClick={() => withdraw("1000000000000000000", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
                             Withdraw
                         </Button>
                     </Paper>
