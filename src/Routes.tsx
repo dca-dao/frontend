@@ -11,7 +11,7 @@ import { DcaForm } from './components/DCA/DcaForm';
 function Routes() {
     return (
         <DAppProvider config={{
-            supportedChains: [ChainId.Kovan],
+            supportedChains: [ChainId.Kovan, ChainId.Mainnet],
             notifications: {
                 expirationPeriod: 1000,
                 checkInterval: 1000

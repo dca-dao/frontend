@@ -15,13 +15,13 @@ const daiContract = new Contract(daiAddress, daiInterface) as any
 export const ApproveDaiComp = () => {
 
     //DAI contract functions
-    const { state, send } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
+    const { state, send: sendApproveDai } = useContractFunction(daiContract, 'approve', { transactionName: 'Approve DAI' })
 
     const approveDai = (diamondAddress: string, amount: string) => {
-        send(diamondAddress, amount)
+        sendApproveDai(diamondAddress, amount)
     }
 
-    return { state, send }
+    return { state, sendApproveDai }
 }
 
 // export const ApproveDai = (diamondAddress: string, amount: string) => {
