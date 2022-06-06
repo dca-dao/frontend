@@ -1,6 +1,6 @@
 # Hosted here
 [DCA](https://dapp-dca.netlify.app/)  
-For more info, check this [README](https://github.com/dca-dao)
+For more info, check this [README](https://github.com/dca-dao/.github/blob/master/profile/README.md)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
