@@ -10,7 +10,7 @@ import { useCall } from "@usedapp/core"
 //kovan dai : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa
 
 const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-const diamondAddress = '0x3D234faB36905f4d75753564f3301f2119Cb9cCA'
+const diamondAddress = '0xe76B1F8e12d6491639c798B58De0b49F9b3b6ce2'
 
 // Interacting with DAI through diamond contract
 

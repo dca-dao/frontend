@@ -7,7 +7,7 @@
     flex-direction: column;
 }
 
-#dcaPaper, #ongoingPaper, #stablePaper, #notCoPaper, #fundPaper{
+#dcaPaper, #ongoingPaper, #stablePaper, #notCoPaper, #fundPaper, #withdrawPaper{
     background-color: #fafafa;
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -61,5 +61,19 @@
 
 #dcaSettingsInfos, #walletBalance{
     margin-bottom: 40px;
+    margin-top: 40px;
 }
+
+#dcaDaiBalance, #dcaWethBalance{
+    width: 50%;
+}
+
+#dcaBalanceInfos{
+    width: 100%;
+}
+
+#daiBalw,#wethBalw{
+    margin-top: 20px;
+}
+
 

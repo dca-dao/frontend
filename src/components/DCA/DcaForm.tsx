@@ -26,7 +26,7 @@ export const DcaForm = () => {
 
     // Contract addresses
     const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-    const diamondAddress = "0x3D234faB36905f4d75753564f3301f2119Cb9cCA"
+    const diamondAddress = "0xe76B1F8e12d6491639c798B58De0b49F9b3b6ce2"
 
     // Use metamask connected account
     const { account } = useEthers()
@@ -51,15 +51,22 @@ export const DcaForm = () => {
     // Fund
     const { state: stateFundDai, send: sendFundDai } = useContractFunction(dcaManagerContract, 'fundAccount', { transactionName: 'Fund account' })
 
-    const fundDai = (amount: string, address: string) => {
-        sendFundDai(amount, address)
+    const fundDai = (amount: string) => {
+        sendFundDai(amount)
     }
 
-    // Withdraw
-    const { state: stateWithdraw, send: sendWithdraw } = useContractFunction(dcaManagerContract, 'withdraw', { transactionName: 'Withdraw account' })
+    // Withdraw DAI
+    const { state: stateWithdrawDai, send: sendWithdrawDai } = useContractFunction(dcaManagerContract, 'withdrawDai', { transactionName: 'Withdraw DAI' })
 
-    const withdraw = (amount: string, address: string) => {
-        sendWithdraw(amount, address)
+    const withdrawDai = (amount: string,) => {
+        sendWithdrawDai(amount)
+    }
+
+    // Withdraw WETH
+    const { state: stateWithdrawWeth, send: sendWithdrawWeth } = useContractFunction(dcaManagerContract, 'withdrawWEth', { transactionName: 'Withdraw WETH' })
+
+    const withdrawWeth = (amount: string) => {
+        sendWithdrawWeth(amount)
     }
 
     // Set DCA Settings
@@ -81,8 +88,8 @@ export const DcaForm = () => {
     // DCA frequency in seconds
     const [frequency, setFrequency] = React.useState('');
 
-    const frequencyHandleChange = (fequencyEvent: SelectChangeEvent) => {
-        setFrequency(fequencyEvent.target.value as string);
+    const frequencyHandleChange = (frequencyEvent: SelectChangeEvent) => {
+        setFrequency(frequencyEvent.target.value as string);
     };
 
     // DCA amount to invest
@@ -93,6 +100,25 @@ export const DcaForm = () => {
     };
 
     let investNb: number = parseFloat(invest) * 10 ** 18
+
+    // WETH withdraw amount
+    const [wethWd, setWethWd] = React.useState('');
+
+    const wethWdHandleChange = (wethWdEvent: React.ChangeEvent<HTMLInputElement>) => {
+        setWethWd(wethWdEvent.target.value as string);
+    };
+
+    let wethWdNb: number = parseFloat(wethWd) * 10 ** 18
+
+    // DCA withdraw amount
+    const [daiWd, setDaiWd] = React.useState('');
+
+    const daiWdHandleChange = (daiWdEvent: React.ChangeEvent<HTMLInputElement>) => {
+        setDaiWd(daiWdEvent.target.value as string);
+    };
+
+    let daiWdNb: number = parseFloat(daiWd) * 10 ** 18
+
 
     // Contract settings
     const dcaDaiBalance = useDcaDaiBalance(account)
@@ -135,7 +161,7 @@ export const DcaForm = () => {
                         <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI
                         </Button>
-                        <Button onClick={() => fundDai(String(amountNb), "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
+                        <Button onClick={() => fundDai(String(amountNb))} color="primary" variant="contained">
                             Fund with DAI
                         </Button>
                     </Paper>
@@ -181,36 +207,54 @@ export const DcaForm = () => {
 
                     <Paper elevation={3} id="ongoingPaper">
                         <h2>Ongoing DCA</h2>
-                        <div id="dcaBalanceInfos">
-                            {dcaDaiBalance && (
-                                <div className="balance" id="daiBal">
-                                    DCA DAI Balance :
-                                    <p className="bold">{formatEther(dcaDaiBalance)}</p>
-                                </div>
-                            )}
-                            {dcaWEthBalance && (
-                                <div className="balance" id="wethBal">
-                                    DCA WETH Balance :
-                                    <p className="bold">{formatEther(dcaWEthBalance)}</p>
-                                </div>
-                            )}
-                        </div>
                         <div id="dcaSettingsInfos">
                             {dcaSettings && (
                                 <div className="balance">
                                     DCA Settings :
                                     <p className="bold">Amount : {formatEther(dcaSettings.amount)}</p>
-                                    <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
+                                    <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16) / 86400} day(s)</p>
                                 </div>
                             )}
                         </div>
-                        <div id="status">
-                            Transaction status : {stateWithdraw.status}
-                        </div>
+                    </Paper>
+                    <Paper elevation={3} id="withdrawPaper">
+                        <h2>Withdraw assets</h2>
+                        <div id="dcaBalanceInfos">
+                            <div id="dcaDaiBalance" >
+                                <TextField id="dcaWithdrawDaiInput" label="Amount of DAI to withdraw" variant="outlined" margin='normal' type="number" value={daiWd}
+                                    onChange={daiWdHandleChange} />
+                                {dcaDaiBalance && (
+                                    <div className="balance" id="daiBalw">
+                                        DCA DAI Balance :
+                                        <p className="bold">{formatEther(dcaDaiBalance)}</p>
+                                    </div>
+                                )}
+                                <div id="status">
+                                    Transaction status : {stateWithdrawDai.status}
+                                </div>
 
-                        <Button onClick={() => withdraw("1000000000000000000", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
-                            Withdraw
-                        </Button>
+                                <Button onClick={() => withdrawDai(String(daiWdNb))} color="primary" variant="contained">
+                                    Withdraw DAI
+                                </Button>
+                            </div>
+                            <div id="dcaWethBalance">
+                                <TextField id="dcaWithdrawWethInput" label="Amount of WETH to withdraw" variant="outlined" margin='normal' type="number" value={wethWd}
+                                    onChange={wethWdHandleChange} />
+                                {dcaWEthBalance && (
+                                    <div className="balance" id="wethBalw">
+                                        DCA WETH Balance :
+                                        <p className="bold">{formatEther(dcaWEthBalance)}</p>
+                                    </div>
+                                )}
+                                <div id="status">
+                                    Transaction status : {stateWithdrawWeth.status}
+                                </div>
+
+                                <Button onClick={() => withdrawWeth(String(wethWdNb))} color="primary" variant="contained">
+                                    Withdraw WETH
+                                </Button>
+                            </div>
+                        </div>
                     </Paper>
 
                     <Paper elevation={3} id="stablePaper">
