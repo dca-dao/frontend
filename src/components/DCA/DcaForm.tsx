@@ -77,6 +77,8 @@ export const DcaForm = () => {
         setAmount(amountEvent.target.value as string);
     };
 
+    let amountNb: number = parseFloat(amount) * 10 ** 18
+
     // DCA frequency in seconds
     const [frequency, setFrequency] = React.useState('');
 
@@ -84,15 +86,16 @@ export const DcaForm = () => {
         setFrequency(fequencyEvent.target.value as string);
     };
 
-    // DCA invest
+    // DCA amount to invest
     const [invest, setinvest] = React.useState('');
 
     const investHandleChange = (investEvent: React.ChangeEvent<HTMLInputElement>) => {
         setinvest(investEvent.target.value as string);
     };
 
+    let investNb: number = parseFloat(invest) * 10 ** 18
 
-
+    // Contract settings
     const dcaDaiBalance = useDcaDaiBalance(account)
     const dcaWEthBalance = useDcaWEthBalance(account)
     const dcaSettings = useDcaSettings(account)
@@ -120,11 +123,14 @@ export const DcaForm = () => {
                                     <p className="bold">{formatEther(daiBalance)}</p>
                                 </div>
                             )}
+                            <div id="status">
+                                Transaction status : {stateFundDai.status}
+                            </div>
                         </div>
                         <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI
                         </Button>
-                        <Button onClick={() => fundDai(amount, "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
+                        <Button onClick={() => fundDai(String(amountNb), "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
                             Fund with DAI
                         </Button>
                     </Paper>
@@ -159,7 +165,10 @@ export const DcaForm = () => {
                                 <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
                             </div>
                         )}
-                        <Button onClick={() => setDcaSettings(invest, frequency)} color="primary" variant="contained">
+                        <div id="status">
+                            Transaction status : {stateSetDcaSettings.status}
+                        </div>
+                        <Button onClick={() => setDcaSettings(String(investNb), frequency)} color="primary" variant="contained">
                             Set DCA Settings
                         </Button>
                     </Paper>
@@ -179,6 +188,9 @@ export const DcaForm = () => {
                                     <p className="bold">{formatEther(dcaWEthBalance)}</p>
                                 </div>
                             )}
+                        </div>
+                        <div id="status">
+                            Transaction status : {stateWithdraw.status}
                         </div>
 
                         <Button onClick={() => withdraw("1000000000000000000", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
