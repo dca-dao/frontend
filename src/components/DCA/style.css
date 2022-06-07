@@ -37,3 +37,23 @@
 #balance{
     margin-top: 20px;
 }
+
+#dcaBalanceInfos{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+#daiBal{
+    margin-right: 50px;
+}
+
+#approve{
+    margin-right: 20px;
+}
+
+#fundMax{
+    margin-bottom: 20px;
+}
+

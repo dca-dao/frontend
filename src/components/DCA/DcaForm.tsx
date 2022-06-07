@@ -70,13 +70,28 @@ export const DcaForm = () => {
         sendSetDcaSettings(amount, interval)
     }
 
+    // DCA amount funded
+    const [amount, setAmount] = React.useState('');
+
+    const amountHandleChange = (amountEvent: React.ChangeEvent<HTMLInputElement>) => {
+        setAmount(amountEvent.target.value as string);
+    };
 
     // DCA frequency in seconds
     const [frequency, setFrequency] = React.useState('');
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setFrequency(event.target.value as string);
+    const frequencyHandleChange = (fequencyEvent: SelectChangeEvent) => {
+        setFrequency(fequencyEvent.target.value as string);
     };
+
+    // DCA invest
+    const [invest, setinvest] = React.useState('');
+
+    const investHandleChange = (investEvent: React.ChangeEvent<HTMLInputElement>) => {
+        setinvest(investEvent.target.value as string);
+    };
+
+
 
     const dcaDaiBalance = useDcaDaiBalance(account)
     const dcaWEthBalance = useDcaWEthBalance(account)
@@ -96,31 +111,30 @@ export const DcaForm = () => {
                 <div id="dcaDiv">
                     <Paper elevation={3} id="fundPaper">
                         <h2>Fund your account</h2>
-                        <TextField id="dcaFund" label="Amount to fund" variant="outlined" margin='normal' type="number" fullWidth />
+                        <TextField id="dcaFund" label="Amount to fund" variant="outlined" margin='normal' type="number" fullWidth value={amount}
+                            onChange={amountHandleChange} />
                         <div>
                             {daiBalance && (
-                                <div className="balance">
+                                <div className="balance" id="fundMax">
                                     Maximum:
                                     <p className="bold">{formatEther(daiBalance)}</p>
                                 </div>
                             )}
                         </div>
-                        <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained">
+                        <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI
                         </Button>
-                        <Button onClick={() => fundDai("", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
+                        <Button onClick={() => fundDai(amount, "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
                             Fund with DAI
-                        </Button>
-
-                        <Button onClick={() => setDcaSettings("1000", "86400")} color="primary" variant="contained">
-                            Set DCA Settings
                         </Button>
                     </Paper>
 
                     <Paper elevation={3} id="dcaPaper">
                         <h2>Start your DCA</h2>
                         <div id="dcaInputs">
-                            <TextField id="dcaInput" label="Amount to invest" variant="outlined" margin='normal' type="number" fullWidth />
+                            <TextField id="dcaInput" label="Amount to invest" variant="outlined" margin='normal' type="number" fullWidth value={invest}
+                                onChange={investHandleChange} />
+
                             <FormControl id="dcaFrequency" margin='normal' fullWidth>
                                 <InputLabel id="select-label">Frequency</InputLabel>
                                 <Select
@@ -128,7 +142,7 @@ export const DcaForm = () => {
                                     id="select"
                                     value={frequency}
                                     label="Frequency"
-                                    onChange={handleChange}
+                                    onChange={frequencyHandleChange}
                                 >
                                     <MenuItem value={86400}>Daily</MenuItem>
                                     <MenuItem value={302400}>Bi-weekly</MenuItem>
@@ -138,18 +152,6 @@ export const DcaForm = () => {
                                 </Select>
                             </FormControl>
                         </div>
-                        {dcaDaiBalance && (
-                            <div className="balance">
-                                DCA DAI Balance :
-                                <p className="bold">{formatEther(dcaDaiBalance)}</p>
-                            </div>
-                        )}
-                        {dcaWEthBalance && (
-                            <div className="balance">
-                                DCA WETH Balance :
-                                <p className="bold">{formatEther(dcaWEthBalance)}</p>
-                            </div>
-                        )}
                         {dcaSettings && (
                             <div className="balance">
                                 DCA Settings :
@@ -157,14 +159,28 @@ export const DcaForm = () => {
                                 <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
                             </div>
                         )}
-                        <Button color="primary" variant="contained">
-                            Invest
+                        <Button onClick={() => setDcaSettings(invest, frequency)} color="primary" variant="contained">
+                            Set DCA Settings
                         </Button>
                     </Paper>
 
                     <Paper elevation={3} id="ongoingPaper">
                         <h2>Ongoing DCA</h2>
-                        <p>Total value : </p>
+                        <div id="dcaBalanceInfos">
+                            {dcaDaiBalance && (
+                                <div className="balance" id="daiBal">
+                                    DCA DAI Balance :
+                                    <p className="bold">{formatEther(dcaDaiBalance)}</p>
+                                </div>
+                            )}
+                            {dcaWEthBalance && (
+                                <div className="balance" id="wethBal">
+                                    DCA WETH Balance :
+                                    <p className="bold">{formatEther(dcaWEthBalance)}</p>
+                                </div>
+                            )}
+                        </div>
+
                         <Button onClick={() => withdraw("1000000000000000000", "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
                             Withdraw
                         </Button>
