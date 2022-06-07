@@ -100,6 +100,9 @@ export const DcaForm = () => {
     const dcaWEthBalance = useDcaWEthBalance(account)
     const dcaSettings = useDcaSettings(account)
 
+    // Transaction status
+
+
     return (
         <div id="mainDiv">
 
@@ -114,7 +117,7 @@ export const DcaForm = () => {
                 <div id="dcaDiv">
                     <Paper elevation={3} id="fundPaper">
                         <h2>Fund your account</h2>
-                        <TextField id="dcaFund" label="Amount to fund" variant="outlined" margin='normal' type="number" fullWidth value={amount}
+                        <TextField id="dcaFund" label="Amount to fund in DAI" variant="outlined" margin='normal' type="number" fullWidth value={amount}
                             onChange={amountHandleChange} />
                         <div>
                             {daiBalance && (
@@ -158,13 +161,14 @@ export const DcaForm = () => {
                                 </Select>
                             </FormControl>
                         </div>
-                        {dcaSettings && (
-                            <div className="balance">
-                                DCA Settings :
-                                <p className="bold">Amount : {formatEther(dcaSettings.amount)}</p>
-                                <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
-                            </div>
-                        )}
+                        <div id="dcaBalanceInfos">
+                            {dcaDaiBalance && (
+                                <div className="balance" id="daiBal">
+                                    DCA DAI Balance :
+                                    <p className="bold">{formatEther(dcaDaiBalance)}</p>
+                                </div>
+                            )}
+                        </div>
                         <div id="status">
                             Transaction status : {stateSetDcaSettings.status}
                         </div>
@@ -186,6 +190,15 @@ export const DcaForm = () => {
                                 <div className="balance" id="wethBal">
                                     DCA WETH Balance :
                                     <p className="bold">{formatEther(dcaWEthBalance)}</p>
+                                </div>
+                            )}
+                        </div>
+                        <div id="dcaSettingsInfos">
+                            {dcaSettings && (
+                                <div className="balance">
+                                    DCA Settings :
+                                    <p className="bold">Amount : {formatEther(dcaSettings.amount)}</p>
+                                    <p className="bold">Period  : {parseInt(dcaSettings.period._hex, 16)}</p>
                                 </div>
                             )}
                         </div>
