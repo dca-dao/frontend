@@ -26,7 +26,7 @@ export const DcaForm = () => {
 
     // Contract addresses
     const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-    const diamondAddress = "0x9eb2b0085c9c04c9f4d2f30f7580b08a1976515e"
+    const diamondAddress = "0xe76B1F8e12d6491639c798B58De0b49F9b3b6ce2"
 
     // Use metamask connected account
     const { account } = useEthers()
@@ -51,8 +51,8 @@ export const DcaForm = () => {
     // Fund
     const { state: stateFundDai, send: sendFundDai } = useContractFunction(dcaManagerContract, 'fundAccount', { transactionName: 'Fund account' })
 
-    const fundDai = (amount: string, address: string) => {
-        sendFundDai(amount, address)
+    const fundDai = (amount: string) => {
+        sendFundDai(amount)
     }
 
     // Withdraw DAI
@@ -161,7 +161,7 @@ export const DcaForm = () => {
                         <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI
                         </Button>
-                        <Button onClick={() => fundDai(String(amountNb), "0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa")} color="primary" variant="contained">
+                        <Button onClick={() => fundDai(String(amountNb))} color="primary" variant="contained">
                             Fund with DAI
                         </Button>
                     </Paper>
