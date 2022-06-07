@@ -122,7 +122,7 @@ export const DcaForm = () => {
                         <div>
                             {daiBalance && (
                                 <div className="balance" id="fundMax">
-                                    Maximum:
+                                    Wallet balance:
                                     <p className="bold">{formatEther(daiBalance)}</p>
                                 </div>
                             )}
