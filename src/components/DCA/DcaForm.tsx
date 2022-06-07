@@ -20,14 +20,13 @@ import { useDcaDaiBalance, useDcaWEthBalance, useDcaSettings } from '../../hooks
 
 //test contract : 0xE627Fa9b65FBCaE3D872e73b83F70eAb82103B24
 //kovan dai : 0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa
-// 0x4e551ab784a1acDDE29eb4A5C4c6275d8fA4D52D
+// 0x3D234faB36905f4d75753564f3301f2119Cb9cCA
 
 export const DcaForm = () => {
 
     // Contract addresses
     const daiAddress = '0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa'
-    const diamondAddress = "0x4e551ab784a1acDDE29eb4A5C4c6275d8fA4D52D"
-    const dcaManagerAddress = "0x7633f4dDa2be60982A85ae337079869681e0Ce85"
+    const diamondAddress = "0x3D234faB36905f4d75753564f3301f2119Cb9cCA"
 
     // Use metamask connected account
     const { account } = useEthers()
@@ -128,7 +127,10 @@ export const DcaForm = () => {
                             )}
                         </div>
                         <div id="status">
-                            Transaction status : {stateFundDai.status}
+                            <p>
+                                Approval status: {stateApproveDai.status} <br />
+                                Transaction status : {stateFundDai.status}
+                            </p>
                         </div>
                         <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI
