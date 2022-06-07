@@ -119,16 +119,16 @@ export const DcaForm = () => {
                         <h2>Fund your account</h2>
                         <TextField id="dcaFund" label="Amount to fund in DAI" variant="outlined" margin='normal' type="number" fullWidth value={amount}
                             onChange={amountHandleChange} />
-                        <div>
+                        <div id="walletBalance">
                             {daiBalance && (
                                 <div className="balance" id="fundMax">
                                     Wallet balance:
                                     <p className="bold">{formatEther(daiBalance)}</p>
                                 </div>
                             )}
-                            <div id="status">
-                                Transaction status : {stateFundDai.status}
-                            </div>
+                        </div>
+                        <div id="status">
+                            Transaction status : {stateFundDai.status}
                         </div>
                         <Button onClick={() => approveDai(diamondAddress, "1000000000000000000000000")} color="primary" variant="contained" id="approve">
                             Approve DAI

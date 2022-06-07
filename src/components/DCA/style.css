@@ -43,14 +43,11 @@
     width: 100%;
     height: 100%;
     margin-bottom: 20px;
+    margin-top: 40px;
 }
 
-#daiBal{
+#daiBal, #approve{
     margin-right: 50px;
-}
-
-#approve{
-    margin-right: 20px;
 }
 
 #fundMax{
@@ -60,5 +57,9 @@
 
 #status{
     margin-bottom: 20px;
+}
+
+#dcaSettingsInfos, #walletBalance{
+    margin-bottom: 40px;
 }
 
